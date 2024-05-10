@@ -1,7 +1,18 @@
 package tavares.samara.lista.lista.adapter;
 
-import androidx.annotation.NonNull;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import tavares.samara.lista.R;
+import tavares.samara.lista.lista.activity.MainActivity;
 import tavares.samara.lista.lista.model.MyItem;
 
 public class MyAdapter extends RecyclerView.Adapter {
@@ -22,13 +33,13 @@ public class MyAdapter extends RecyclerView.Adapter {
         MyItem myItem = itens.get(position);
         View v = holder.itemView;
 
-        ImageView imvfoto = v.findViewById(R.id.imvfoto);
-        imvfoto.setImageURI(myItem.foto);
+        ImageView imvfoto = v.findViewById(R.id.imvPhoto);
+        imvfoto.setImageURI(myItem.photo);
 
         TextView tvTitle = v.findViewById(R.id.tvTitle);
         tvTitle.setText(myItem.title);
 
-        TextView tvdesc = v.findViewById(R.id.tvdesc);
+        TextView tvdesc = v.findViewById(R.id.tvDesc);
         tvdesc.setText(myItem.description);
     }
     @Override
