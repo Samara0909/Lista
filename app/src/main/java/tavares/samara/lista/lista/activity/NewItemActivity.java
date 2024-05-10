@@ -70,11 +70,10 @@ public class NewItemActivity extends AppCompatActivity {
                             i.putExtra("description", description);
                             setResult(Activity.RESULT_OK, i);
                             finish();
-                            }
                         }
                     }
-
-                    }
+                }
             }
-        });
-            }
+        }
+    });
+                }
