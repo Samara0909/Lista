@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,6 +23,9 @@ import tavares.samara.lista.R;
 public class NewItemActivity extends AppCompatActivity {
     static int PHOTO_PICKER_REQUEST = 1;
     Uri photoSelected = null;
+
+    //Uri é um endereço para um dado que não está localizado dentro do espaço reservado a app
+    //Dessa forma, photoSelected guardará o endereço da foto selecionada pelo usuário,e não a foto em si.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,48 +36,56 @@ public class NewItemActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         ImageButton imgCI = findViewById(R.id.imbCl);
         imgCI.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //Dentro do método onClick, executamos a abertura da galeria para escolha da foto
                 Intent photoPickerIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, PHOTO_PICKER_REQUEST);
-                protected void onActivityResult(int requestCode, int resultCode,
-                @Nullable Intent data) {
-                    super.onActivityResult(requestCode, resultCode, data);
-                    if(requestCode == PHOTO_PICKER_REQUEST) {
-                        if(resultCode == Activity.RESULT_OK) {
-                            photoSelected = data.getData();
-                            ImageView imvfotoPreview = findViewById(R.id.imvPhotoPreview);
-                            imvfotoPreview.setImageURI(photoSelected); }  }
-                    Button btnAddItem = findViewById(R.id.bntAddItem);
-                    btnAddItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (photoSelected == null) {
-                                Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
-                                return; }
-                            EditText etTitle = findViewById(R.id.etTitle);
-                            String title = etTitle.getText().toString();
-                            if (title.isEmpty()) {
-                                Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_LONG).show();
-                                return;   }
-                            EditText etDesc = findViewById(R.id.etDesc);
-                            String description = etDesc.getText().toString();
-                            if (etDesc.isEmpty()) {
-                                Toast.makeText(NewItemActivity.this, "É necessário inserir uma descrição", Toast.LENGTH_LONG).show();
-                                return; }
-                            Intent i = new Intent();
-                            i.setData(photoSelected);
-                            i.putExtra("title", title);
-                            i.putExtra("description", description);
-                            setResult(Activity.RESULT_OK, i);
-                            finish();
-                        }
-                    }
+                startActivityForResult(photoPickerIntent, PHOTO_PICKER_REQUEST); //executamos o Intent através do uso do método startActivityForResult
+            }
+        });
+
+        Button btnAddItem = findViewById(R.id.bntAddItem);
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (photoSelected == null) {
+                    Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
+                    return;
                 }
+                EditText etTitle = findViewById(R.id.etTitle);
+                String title = etTitle.getText().toString();
+                if (title.isEmpty()) {
+                    Toast.makeText(NewItemActivity.this, "É necessário inserir um título", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                EditText etDesc = findViewById(R.id.etDesc);
+                String description = etDesc.getText().toString();
+                if (description.isEmpty()) {
+                    Toast.makeText(NewItemActivity.this, "É necessário inserir uma descrição", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent i = new Intent();
+                i.setData(photoSelected);
+                i.putExtra("title", title);
+                i.putExtra("description", description);
+                setResult(Activity.RESULT_OK, i);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data); //onActivityResult entrega 3 parâmetros:data, resultCode e requestCode.
+        if (requestCode == PHOTO_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                photoSelected = data.getData();
+                ImageView imvfotoPreview = findViewById(R.id.imvPhotoPreview); //obtemos o Uri da imagem escolhida e guardamos dentro do atributo de classe photoSelected
+                imvfotoPreview.setImageURI(photoSelected);
             }
         }
-    });
-                }
+    }
+}

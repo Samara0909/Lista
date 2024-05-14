@@ -40,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        FloatingActionButton fabAddItem = findViewById(R.id.fabAddNewItem);
+        FloatingActionButton fabAddItem = findViewById(R.id.fabAddNewItem); //o botão FAB e registramos um ouvidor de cliques logo em seguida
         fabAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, NewItemActivity.class);
-                startActivityForResult(i, NEW_ITEM_REQUEST);
+                Intent i = new Intent(MainActivity.this, NewItemActivity.class); //i -> o Intent a ser executado
+                startActivityForResult(i, NEW_ITEM_REQUEST);//o método startActivityForResult pode ser chamado várias vezes, navegando para diferentes telas.
             }
 
         });
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         rvItens.addItemDecoration(dividerItemDecoration);
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -73,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 myAdapter.notifyItemInserted(itens.size()-1);
 
              }
-            }
+          }
+
     }
 }
 
