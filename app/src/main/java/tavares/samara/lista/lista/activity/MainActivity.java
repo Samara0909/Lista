@@ -2,6 +2,8 @@ package tavares.samara.lista.lista.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,7 @@ import java.util.List;
 import tavares.samara.lista.R;
 import tavares.samara.lista.lista.adapter.MyAdapter;
 import tavares.samara.lista.lista.model.MyItem;
+import tavares.samara.lista.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
     static int NEW_ITEM_REQUEST =1; //identifica a requisição de novo item
@@ -91,7 +95,16 @@ public class MainActivity extends AppCompatActivity {
                 //define o titilo, descriçao e foto do item e adiciona ele a lista
                 myItem.title = data.getStringExtra("title");
                 myItem.description = data.getStringExtra("description");
-                myItem.photo = data.getData();
+                Uri selectedPhotoURI = data.getData();
+                try{
+                    Bitmap photo = Util.getBitmap( MainActivity.this, selectedPhotoURI
+                            , 100, 100 );
+                    myItem.photo = photo;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    }
+            }
+
                 itens.add(myItem);
                 myAdapter.notifyItemInserted(itens.size()-1); // notifica o adapter que um novo item foi inserido
             }
