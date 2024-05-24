@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import tavares.samara.lista.R;
 import tavares.samara.lista.lista.adapter.MyAdapter;
+import tavares.samara.lista.lista.model.MainActivityViewModel;
 import tavares.samara.lista.lista.model.MyItem;
 
 import android.app.Activity;
@@ -52,7 +54,7 @@ import tavares.samara.lista.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
     static int NEW_ITEM_REQUEST =1; //identifica a requisição de novo item
-    List<MyItem> itens = new ArrayList<>(); // lista de itens- MyItem
+
 
     MyAdapter myAdapter; // adapter para o RecyclerView
 
@@ -96,14 +98,18 @@ public class MainActivity extends AppCompatActivity {
                 myItem.title = data.getStringExtra("title");
                 myItem.description = data.getStringExtra("description");
                 Uri selectedPhotoURI = data.getData();
+
                 try{
                     Bitmap photo = Util.getBitmap( MainActivity.this, selectedPhotoURI
                             , 100, 100 );
                     myItem.photo = photo;
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    }
-            }
+                }
+                 MainActivityViewModel vm = new ViewModelProvider( this ).get( MainActivityViewModel.class );
+
+                        List<MyItem> itens = vm.getItens();
+
 
                 itens.add(myItem);
                 myAdapter.notifyItemInserted(itens.size()-1); // notifica o adapter que um novo item foi inserido
