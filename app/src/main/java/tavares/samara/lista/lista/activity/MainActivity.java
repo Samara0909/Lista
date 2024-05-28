@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         RecyclerView rvItens = findViewById(R.id.rvItens); // obtém referencia ao RecyclerView
+        MainActivityViewModel vm = new ViewModelProvider( this ).get(
+                MainActivityViewModel.class );
+        List<MyItem> itens = vm.getItens();
+
         myAdapter = new MyAdapter(this,itens); // inicializa o adapter
         rvItens.setAdapter(myAdapter); // define o adapter no RecyclerView
         rvItens.setHasFixedSize(true); // otimiza o RecyclerView sabendo que o tamanho não mudará
@@ -103,13 +107,12 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap photo = Util.getBitmap( MainActivity.this, selectedPhotoURI
                             , 100, 100 );
                     myItem.photo = photo;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                } catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();    }
+
                  MainActivityViewModel vm = new ViewModelProvider( this ).get( MainActivityViewModel.class );
-
                         List<MyItem> itens = vm.getItens();
-
 
                 itens.add(myItem);
                 myAdapter.notifyItemInserted(itens.size()-1); // notifica o adapter que um novo item foi inserido

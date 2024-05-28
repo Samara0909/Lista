@@ -42,7 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter {
 
         // Configura a imagem do item, o título do item e a descriçao do item
         ImageView imvfoto = v.findViewById(R.id.imvPhoto);
-        imvfoto.setImageURI(myItem.photo);
+        imvfoto.setImageBitmap(myItem.photo);
 
 
         TextView tvTitle = v.findViewById(R.id.tvTitle);
